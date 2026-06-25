@@ -66,7 +66,7 @@ def predictions(problems, userSub, userRating):
     submissions = submissions.drop(columns=['contestId', 'index'])
     submissions['target'] = (submissions['verdict'] == 'OK').astype(float)
 
-    # Concatenate submissions and problems into one dataset
+    # Concatenate submissions and problems into one dataset --- Why?
     df = pd.concat([submissions, problems])
     df = df.drop(columns=['verdict'])
     df['gap'] = userRating-df['rating']
@@ -96,11 +96,11 @@ def predictions(problems, userSub, userRating):
     X = train_df.drop(columns=['target', 'link'])
     y = train_df['target']
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y,
-        test_size=0.2,
-        random_state=42
-    )
+    # X_train, X_test, y_train, y_test = train_test_split(
+    #     X, y,
+    #     test_size=0.2,
+    #     random_state=42
+    # )
 
     # ------------------------------------------------------------------
     # Model
@@ -110,18 +110,18 @@ def predictions(problems, userSub, userRating):
         n_estimators=200,
         random_state=42
     )
-    model.fit(X_train, y_train)
+    model.fit(X, y)
     # ------------------------------------------------------------------
     # Evaluating Model
     # ------------------------------------------------------------------
     
-    from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+    # from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-    y_pred = model.predict(X_test)
+    # y_pred = model.predict(X_test)
 
-    print("MAE:", mean_absolute_error(y_test, y_pred))
-    print("MSE:", mean_squared_error(y_test, y_pred))
-    print("R2 Score:", r2_score(y_test, y_pred))
+    # print("MAE:", mean_absolute_error(y_test, y_pred))
+    # print("MSE:", mean_squared_error(y_test, y_pred))
+    # print("R2 Score:", r2_score(y_test, y_pred))
     # ------------------------------------------------------------------
     # Predict on unsolved problems
     # ------------------------------------------------------------------
